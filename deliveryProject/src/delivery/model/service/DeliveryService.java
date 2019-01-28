@@ -58,6 +58,17 @@ public class DeliveryService {
 		return dList;
 	}
 
+	public int insertReview(String[] review) {
+		Connection conn = getConnection();
+		int result = ddao.insertReview(conn, review);
+		if(result>0)
+			commit(conn);
+		else
+			rollback(conn);
+		
+		return result;
+	}
+
 
 	
 }

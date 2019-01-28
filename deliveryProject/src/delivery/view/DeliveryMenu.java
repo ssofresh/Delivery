@@ -11,7 +11,7 @@ public class DeliveryMenu {
 
 	private Scanner sc = new Scanner(System.in);
 	private DeliveryManager dm = new DeliveryManager();
-
+	private static String[] idpw2 = new String[2];
 	public DeliveryMenu() {
 	}
 
@@ -21,8 +21,9 @@ public class DeliveryMenu {
 		idpw[0] = sc.next();
 		System.out.println("PW 입력 : ");
 		idpw[1] = sc.next();
+		
+		idpw2 = dm.login(idpw);
 
-		dm.login(idpw);
 	}
 
 	public void mainMenu() {
@@ -44,7 +45,8 @@ public class DeliveryMenu {
 			case 2: //printOrderNum(dm.selectOrderNum(this.inputOrderNum());
 					this.printOrderNum(dm.selectOrderNum(this.inputOrderNum()));
 					break;
-			case 3:
+			case 3: dm.insertReview(this.inputReview());
+					break;
 			default:
 				System.out.println("잘못입력함. 다시 입력 하세요");
 			}
@@ -155,6 +157,16 @@ public class DeliveryMenu {
 		}
 		Delivery d = dList.get(0);
 		System.out.println(d.getTotPrice()+"원");
+	}
+	
+	public String[] inputReview() {
+		String[] review = new String[2];
+		review[0] = idpw2[0];
+		System.out.println("리뷰 내용을 작성해주세요 : ");
+		sc.next();
+		review[1] = sc.nextLine();
+		
+		return review;
 	}
 
 }

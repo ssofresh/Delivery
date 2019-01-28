@@ -143,4 +143,23 @@ public class DeliveryDao {
 		return dList;
 	}
 
+	public int insertReview(Connection conn, String[] review) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "insert into review values (?, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, review[0]);
+			pstmt.setString(2, review[1]);
+			result = pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 }
