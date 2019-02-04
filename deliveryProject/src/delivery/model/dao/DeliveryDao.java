@@ -146,7 +146,7 @@ public class DeliveryDao {
 	public int insertReview(Connection conn, String[] review) {
 		int result = 0;
 		PreparedStatement pstmt = null;
-		String query = "insert into review values (?, ?)";
+		String query = "insert into review values (seq_review_num.nextval, ?, ?)";
 		
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -158,6 +158,87 @@ public class DeliveryDao {
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	public ArrayList<String> selectReview(Connection conn) {
+		ArrayList<String> rList = new ArrayList<String>();
+		String[] review = new String[3];
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String query = "select * from review";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				review[0]=rset.getString("num");
+				review[1]=rset.getString("id");
+				review[2]=rset.getString("content");
+				rList.add(review[0]);
+				rList.add(review[1]);
+				rList.add(review[2]);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return rList;
+	}
+
+	public int insertMenu(Connection conn, Delivery d) {
+		int result=0;
+		PreparedStatement pstmt = null;
+		String query = "insert into menu values (seq_food_id.nextval, ?, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, d.getFoodName());
+			pstmt.setInt(2, d.getPrice());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteMenu(Connection conn, int foodId) {
+		int result=0;
+		PreparedStatement pstmt = null;
+		String query = "delete from menu where food_id = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, foodId);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteReview(Connection conn, int num) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String query = "delete from review where num = ?";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, num);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(conn);
 		}
 		return result;
 	}

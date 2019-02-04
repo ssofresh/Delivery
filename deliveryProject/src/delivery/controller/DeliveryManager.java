@@ -8,8 +8,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-
 import delivery.model.service.DeliveryService;
 import delivery.model.vo.Delivery;
 import delivery.view.DeliveryMenu;
@@ -22,7 +20,7 @@ public class DeliveryManager {
 	
 	
 	
-	public String[] login(String[] idpw) {
+	public void login(String[] idpw) {
 		String[] idpw2 = dservice.login(idpw);
 		String adminID = "admin";
 		String adminPW = "admin";
@@ -32,13 +30,13 @@ public class DeliveryManager {
 			new DeliveryMenu().login();
 		} else if(idpw2[0].equals(adminID) && idpw2[1].equals(adminPW)) {
 			new DeliveryMenu().adminMenu();
-		} else if(idpw[0] != null && idpw[1] != null) {
+		} else if(idpw2[0] != null && idpw2[1] != null) {
 			new DeliveryMenu().mainMenu();
 		} else {
 			System.out.println("틀렸음. 다시입력 ㄱㄱ");
 			new DeliveryMenu().login();
 		}
-		return idpw2;	
+		
 	}
 
 	public ArrayList<Delivery> printMenu() {
@@ -70,9 +68,7 @@ public class DeliveryManager {
 			System.out.println("해당 주문번호 조회 성공");
 		return dList;
 	}
-
-
-
+	
 	public void insertReview(String[] review) {
 		int result = dservice.insertReview(review);
 		
@@ -82,5 +78,50 @@ public class DeliveryManager {
 			System.out.println("리뷰 등록 실패");
 		}
 	}
-	
+
+
+
+	public ArrayList<String> selectReview() {
+		ArrayList<String> rList = dservice.selectReview();
+		if(rList.size() == 0) {
+			System.out.println("리뷰 불러오기 실패");
+			new DeliveryMenu().mainMenu();
+		}
+		return rList;
+	}
+
+
+
+	public void insertMenu(Delivery d) {
+		int result = dservice.insertMenu(d);
+		if(result > 0) {
+			System.out.println("메뉴 등록 성공");
+		}else {
+			System.out.println("메뉴 등록 실패");
+		}
+	}
+
+
+
+	public void deleteMenu(int foodId) {
+		int result = dservice.deleteMenu(foodId);
+		if(result > 0) {
+			System.out.println("메뉴 삭제 성공");
+		}else {
+			System.out.println("메뉴 삭제 실패");
+		}
+		
+	}
+
+
+
+	public void deleteReview(int num) {
+		int result = dservice.deleteReview(num);
+		if(result > 0) {
+			System.out.println("리뷰 삭제 성공");
+		}else {
+			System.out.println("리뷰 삭제 실패");
+		}
+		
+	}
 }

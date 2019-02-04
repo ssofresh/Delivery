@@ -11,19 +11,18 @@ public class DeliveryMenu {
 
 	private Scanner sc = new Scanner(System.in);
 	private DeliveryManager dm = new DeliveryManager();
-	private static String[] idpw2 = new String[2];
+	private static String[] idpw = new String[2];
+	
 	public DeliveryMenu() {
 	}
 
 	public void login() {
-		String[] idpw = new String[2];
 		System.out.println("ID 입력 : ");
 		idpw[0] = sc.next();
 		System.out.println("PW 입력 : ");
 		idpw[1] = sc.next();
-		
-		idpw2 = dm.login(idpw);
 
+		dm.login(idpw);
 	}
 
 	public void mainMenu() {
@@ -45,8 +44,7 @@ public class DeliveryMenu {
 			case 2: //printOrderNum(dm.selectOrderNum(this.inputOrderNum());
 					this.printOrderNum(dm.selectOrderNum(this.inputOrderNum()));
 					break;
-			case 3: dm.insertReview(this.inputReview());
-					break;
+			case 3: this.reviewMenu();
 			default:
 				System.out.println("잘못입력함. 다시 입력 하세요");
 			}
@@ -65,10 +63,10 @@ public class DeliveryMenu {
 
 			num = sc.nextInt();
 			switch (num) {
-			case 1:
-				adminSubMenu();
-				break;
-			case 2:
+			case 1: adminSubMenu();
+					break;
+			case 2: adminSubReview();
+					break;
 			default:
 				System.out.println("잘못입력함. 다시입력하세요");
 			}
@@ -77,33 +75,70 @@ public class DeliveryMenu {
 	}
 
 	public void adminSubMenu() {
-
 		int num;
 
 		do {
-			System.out.println("**********Sub메뉴**********");
-			System.out.println("1. 메뉴 추가");
-			System.out.println("2. 메뉴 삭제");
-			System.out.println("3. 메뉴 저장");
+			System.out.println("**********메뉴관리페이지**********");
+			System.out.println("1. 메뉴 보기");
+			System.out.println("2. 메뉴 추가");
+			System.out.println("3. 메뉴 삭제");
 			System.out.println("메뉴선택 : ");
 
 			num = sc.nextInt();
 			switch (num) {
-			case 1:
-			case 2:
-			case 3:
+			case 1: this.printMenu(dm.printMenu());
+					break;
+			case 2: dm.insertMenu(this.inputMenu());
+					break;
+			case 3: dm.deleteMenu(this.inputFoodId());
+					break;
 			default:
 				System.out.println("잘못입력함. 다시입력하세요");
 			}
 		} while (true);
 	}
+	
+	public void adminSubReview() {
+		int num;
 
-	/*
-	 * public void printMenu(ArrayList<Delivery> dList) {
-	 * System.out.println("*******메뉴판********");
-	 * 
-	 * for(Delivery d:dList) { System.out.println(d); } }
-	 */
+		do {
+			System.out.println("**********리뷰관리페이지**********");
+			System.out.println("1. 리뷰 보기");
+			System.out.println("2. 리뷰 삭제");
+			System.out.println("메뉴선택 : ");
+
+			num = sc.nextInt();
+			switch (num) {
+			case 1: this.printReview(dm.selectReview());
+					break;
+			case 2: dm.deleteReview(inputNum());
+					break;
+			default:
+				System.out.println("잘못입력함. 다시입력하세요");
+			}
+		} while (true);
+	}
+	public void reviewMenu() {
+		int num;
+
+		do {
+			System.out.println("**********Review메뉴**********");
+			System.out.println("1. 리뷰 보기");
+			System.out.println("2. 리뷰 작성");
+			System.out.println("메뉴선택 : ");
+
+			num = sc.nextInt();
+			switch (num) {
+			case 1: this.printReview(dm.selectReview());
+					break;
+			case 2: dm.insertReview(this.inputReview());
+					break;
+			case 3: 
+			default:
+				System.out.println("잘못입력함. 다시입력하세요");
+			}
+		} while (true);
+	}
 
 	public Delivery[] order(ArrayList<Delivery> dList) {
 		System.out.println("*******메뉴판********");
@@ -159,14 +194,53 @@ public class DeliveryMenu {
 		System.out.println(d.getTotPrice()+"원");
 	}
 	
+	public void printReview(ArrayList<String> rList) {
+		for(int i=0;i<rList.size();i++) {
+			System.out.print("리뷰 번호 : ");
+			System.out.println(rList.get(i));
+			i++;
+			System.out.print("아이디 : ");
+			System.out.println(rList.get(i));
+			i++;
+			System.out.print("리뷰 내용 : ");
+			System.out.println(rList.get(i));
+			System.out.println("--------------------------");
+		}
+	}
 	public String[] inputReview() {
 		String[] review = new String[2];
-		review[0] = idpw2[0];
-		System.out.println("리뷰 내용을 작성해주세요 : ");
-		sc.next();
+		review[0] = idpw[0];
+		System.out.println("리뷰 내용을 입력하세요 : ");
+		sc.nextLine();
 		review[1] = sc.nextLine();
 		
 		return review;
 	}
 
+	public Delivery inputMenu() {
+		Delivery d = new Delivery();
+		System.out.println("추가할 음식 이름 입력 : ");
+		d.setFoodName(sc.next());
+		System.out.println("가격 입력 : ");
+		d.setPrice(sc.nextInt());
+		return d;	
+	}
+	
+	public int inputFoodId() {
+		System.out.println("삭제할 음식번호 입력 : ");
+		
+		return sc.nextInt();
+	}
+	
+	public void printMenu(ArrayList<Delivery> dList) {
+		for(Delivery d:dList) {
+			System.out.println(d);
+		}
+	}
+	
+	public int inputNum() {
+		System.out.println("삭제할 리뷰 번호 입력 : ");
+		
+		return sc.nextInt();
+	}
 }

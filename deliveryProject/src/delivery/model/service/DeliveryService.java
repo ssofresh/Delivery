@@ -61,14 +61,53 @@ public class DeliveryService {
 	public int insertReview(String[] review) {
 		Connection conn = getConnection();
 		int result = ddao.insertReview(conn, review);
-		if(result>0)
+		if(result > 0)
 			commit(conn);
 		else
 			rollback(conn);
+		close(conn);
 		
 		return result;
 	}
 
+	public ArrayList<String> selectReview() {
+		Connection conn = getConnection();
+		ArrayList<String> rList = ddao.selectReview(conn);
+		close(conn);
+		return rList;
+	}
 
+	public int insertMenu(Delivery d) {
+		Connection conn = getConnection();
+		int result = ddao.insertMenu(conn, d);
+		if(result > 0) 
+			commit(conn);
+		else
+			rollback(conn);
+		close(conn);
+		return result;
+	}
+
+	public int deleteMenu(int foodId) {
+		Connection conn = getConnection();
+		int result = ddao.deleteMenu(conn, foodId);
+		if(result > 0) 
+			commit(conn);
+		else
+			rollback(conn);
+		close(conn);
+		return result;
+	}
+
+	public int deleteReview(int num) {
+		Connection conn = getConnection();
+		int result = ddao.deleteReview(conn, num);
+		if(result > 0)
+			commit(conn);
+		else
+			rollback(conn);
+		close(conn);
+		return result;
+	}
 	
 }
