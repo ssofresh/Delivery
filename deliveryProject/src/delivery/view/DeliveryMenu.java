@@ -37,12 +37,9 @@ public class DeliveryMenu {
 
 			num = sc.nextInt();
 			switch (num) {
-			case 1:
-				//this.order(dm.printMenu());
-				dm.insertOrder(this.order(dm.printMenu()));
-				break;
-			case 2: //printOrderNum(dm.selectOrderNum(this.inputOrderNum());
-					this.printOrderNum(dm.selectOrderNum(this.inputOrderNum()));
+			case 1: dm.insertOrder(this.order(dm.printMenu()));
+				    break;
+			case 2: this.printOrderNum(dm.selectOrderNum(this.inputOrderNum()));
 					break;
 			case 3: this.reviewMenu();
 			default:
@@ -150,9 +147,6 @@ public class DeliveryMenu {
 			d2[c] = new Delivery();
 			d2[c] = d;
 			System.out.println(d2[c++]);
-			//System.out.println(d);
-			//d2[c].setPrice(d.getPrice());
-			//price[c++] = d.getPrice();
 		}
 		
 		Delivery[] d = new Delivery[10];
@@ -164,7 +158,6 @@ public class DeliveryMenu {
 			d[count].setNum(sc.nextInt());
 			System.out.println("수량 입력 : ");
 			d[count].setCount(sc.nextInt());
-			//d[0].setTotPrice(d[0].getTotPrice()+price[d[count].getNum()]*d[count].getCount());
 			d[0].setTotPrice(d[0].getTotPrice()+d2[d[count].getNum()].getPrice()*d[count].getCount());
 			d[count].setFoodName(d2[d[count].getNum()].getFoodName());
 			System.out.println("주문을 더 ㄱㄱ?(Y/N)");
@@ -172,10 +165,6 @@ public class DeliveryMenu {
 			d[0].setQuantity(count);
 			count++;
 		} while (ch == 'Y');
-		//System.out.println(d[0].getTotPrice());
-		//System.out.println(d[0].getFoodName()+"  "+d[0].getCount());
-		//System.out.println(d[1].getFoodName()+"  "+d[1].getCount());
-		//System.out.println(d[0].getQuantity());
 		return d;
 	}
 	
